@@ -42,7 +42,7 @@ const App = () => {
 
       blogService.setToken(user.token)
       setUser(user)
-      
+
       setUsername('')
       setPassword('')
     } catch(exception) {
@@ -63,23 +63,23 @@ const App = () => {
   const loginForm = () => (
     <>
       <h2>Log in to bloglistApp</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-              <input type='text' 
-                     value={username} name="Username"
-                     onChange={({ target }) => setUsername(target.value)}
-              />
-          </div>
-          <div>
-            password
-              <input type='password' 
-                     value={password} name="Password"
-                     onChange={({ target }) => setPassword(target.value)}
-              />
-          </div>
-          <button type='submit'>Login</button>
-        </form>
+      <form onSubmit={handleLogin}>
+        <div>
+          username
+          <input type='text'
+            value={username} name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          password
+          <input type='password'
+            value={password} name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type='submit'>Login</button>
+      </form>
     </>
   )
 
@@ -87,7 +87,7 @@ const App = () => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
-        returnedBlog = { ...returnedBlog, user: user}
+        returnedBlog = { ...returnedBlog, user: user }
         setBlogs(blogs.concat(returnedBlog))
       })
   }
@@ -95,7 +95,7 @@ const App = () => {
   const updateLikes = (id) => {
     const blog = blogs.find(n => n.id === id)
     const newLikes = Number(blog.likes) + 1
-    const changedBlog = { ...blog, likes: newLikes.toString(), user: user}
+    const changedBlog = { ...blog, likes: newLikes.toString(), user: user }
 
     blogService
       .update(id, changedBlog)
@@ -123,8 +123,7 @@ const App = () => {
         .then(deletedBlog => {
           setBlogs(blogs.filter(b => b.id !== blog.id))
           setIsErrorMessage(false)
-          setMessage(
-            `Blog has been deleted correctly`)
+          setMessage('Blog has been deleted correctly')
           setTimeout(() => {
             setMessage(null)
           }, 5000)
@@ -137,7 +136,7 @@ const App = () => {
             setMessage(null)
           }, 5000)
         })
-      } 
+    }
   }
 
   // DISPLAY
@@ -154,22 +153,22 @@ const App = () => {
     <div>
       <Notification message={message} isError={isErrorMessage} />
       <h2>blogs</h2>
-      
+
       <p>{user.name} logged in</p>
       <Togglable buttonLabel="Create new blog">
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      
+
       {blogs
         .sort((b1, b2) => parseInt(b2.likes) - parseInt(b1.likes))
         .map(blog =>
-        <Blog key={blog.id} 
-              blog={blog} 
-              user={user}     
-              updateLikes={() => updateLikes(blog.id)} 
-              deleteBlog={() => deleteBlog(blog)}
-        />
-      )}
+          <Blog key={blog.id}
+            blog={blog}
+            user={user}
+            updateLikes={() => updateLikes(blog.id)}
+            deleteBlog={() => deleteBlog(blog)}
+          />
+        )}
 
       <button onClick={handleLogout}>Logout</button>
     </div>
